@@ -1,4 +1,5 @@
-[![Swift](https://github.com/nixberg/xoodoo-swift/actions/workflows/swift.yaml/badge.svg)](https://github.com/nixberg/xoodoo-swift/actions/workflows/swift.yaml)
+[![Swift](https://github.com/nixberg/xoodoo-swift/actions/workflows/swift.yaml/badge.svg)](
+https://github.com/nixberg/xoodoo-swift/actions/workflows/swift.yaml)
 
 # xoodoo-swift
 
