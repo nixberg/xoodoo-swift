@@ -34,12 +34,18 @@ final class XoodooTests: XCTestCase {
                 $0[index] = element
             }
         }
-        
         state.withContiguousStorageIfAvailable {
             XCTAssert($0.elementsEqual(0..<48))
         }
         
-        XCTAssert(state.elementsEqual(0..<48))
+        state.withUnsafeMutableBytes {
+            $0.copyBytes(from: 1...48)
+        }
+        state.withUnsafeBytes {
+            XCTAssert($0.elementsEqual(1...48))
+        }
+        
+        XCTAssert(state.elementsEqual(1...48))
     }
 }
 

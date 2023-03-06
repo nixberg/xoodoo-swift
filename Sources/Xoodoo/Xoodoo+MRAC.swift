@@ -96,6 +96,20 @@ extension Xoodoo {
             }
         }
     }
+    
+    @inline(__always)
+    public func withUnsafeBytes<R>(
+        _ body: (UnsafeRawBufferPointer) throws -> R
+    ) rethrows -> R {
+        try Swift.withUnsafeBytes(of: self, body)
+    }
+    
+    @inline(__always)
+    public mutating func withUnsafeMutableBytes<R>(
+        _ body: (UnsafeMutableRawBufferPointer) throws -> R
+    ) rethrows -> R {
+        try Swift.withUnsafeMutableBytes(of: &self, body)
+    }
 }
 
 private extension UnsafeMutableBufferPointer {
