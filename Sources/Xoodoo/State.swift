@@ -1,12 +1,12 @@
-public struct Xoodoo {
-    private var a: SIMD4<UInt32> = .zero
-    private var b: SIMD4<UInt32> = .zero
-    private var c: SIMD4<UInt32> = .zero
+public struct State {
+    private var a: Row = .zero
+    private var b: Row = .zero
+    private var c: Row = .zero
     
     public init() {}
     
     public mutating func permute() {
-        for roundConstant: UInt32 in [
+        for constant: UInt32 in [
             0x058, 0x038, 0x3c0, 0x0d0, 0x120, 0x014,
             0x060, 0x02c, 0x380, 0x0f0, 0x1a0, 0x012,
         ] {
@@ -19,7 +19,7 @@ public struct Xoodoo {
             b = b.rotatingLanes(right: 1)
             c = c.rotated(left: 11)
             
-            a[0] ^= roundConstant
+            a[0] ^= constant
             
             a ^= ~b & c
             b ^= ~c & a
@@ -31,20 +31,22 @@ public struct Xoodoo {
     }
 }
 
-private extension SIMD4 where Scalar == UInt32 {
+private typealias Row = SIMD4<UInt32>
+
+extension Row {
     @inline(__always)
-    func rotatingLanes(right count: Int) -> Self {
+    fileprivate func rotatingLanes(right count: Int) -> Self {
         assert(count == 1)
         return self[Self(3, 0, 1, 2)]
     }
     
     @inline(__always)
-    func rotated(left count: Scalar) -> Self {
-        (self &<< count) | (self &>> (32 - count))
+    fileprivate func rotated(left count: Scalar) -> Self {
+        self &<< count | self &>> (32 - count)
     }
     
     @inline(__always)
-    subscript(_ indices: UInt8...) -> Self {
+    fileprivate subscript(_ indices: UInt8...) -> Self {
         unsafeBitCast(unsafeBitCast(self, to: SIMD16<UInt8>.self)[SIMD16(indices)], to: Self.self)
     }
 }

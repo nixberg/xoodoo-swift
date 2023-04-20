@@ -3,7 +3,7 @@ import Xoodoo
 
 final class XoodooTests: XCTestCase {
     func testPermutation() {
-        XCTAssert(Xoodoo().permutations().dropFirst(383).joined().starts(with: [
+        XCTAssert(State().permutations().dropFirst(383).joined().starts(with: [
             0xb0, 0xfa, 0x04, 0xfe, 0xce, 0xd8, 0xd5, 0x42,
             0xe7, 0x2e, 0xc6, 0x29, 0xcf, 0xe5, 0x7a, 0x2a,
             0xa3, 0xeb, 0x36, 0xea, 0x0a, 0x9e, 0x64, 0x14,
@@ -14,7 +14,7 @@ final class XoodooTests: XCTestCase {
     }
     
     func testMRAC() {
-        var state = Xoodoo()
+        var state = State()
         
         XCTAssertEqual(state.count, 48)
         XCTAssertEqual(state.indices, 0..<48)
@@ -49,8 +49,8 @@ final class XoodooTests: XCTestCase {
     }
 }
 
-private extension Xoodoo {
-    func permutations() -> some Sequence<Self> {
+extension State {
+    fileprivate func permutations() -> some Sequence<Self> {
         sequence(state: self, next: {
             $0.permute()
             return $0
